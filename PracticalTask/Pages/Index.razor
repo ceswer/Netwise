@@ -2,49 +2,53 @@
 @inject IFactsRepository repository;
 
 @code {
-    private List<FactModel> FactModels = FactsRepository.Facts;
-    private FactModel FactModel = FactsRepository.Facts.Last();
+    private List<FactModel> FactModels;
+    private FactModel FactModel;
+
+    private bool IsLoaded = false;
 
     protected override async Task OnInitializedAsync() => await GetNewFact();
     protected async Task GetNewFact()
     {
         FactModel = await repository.GetFactAsync();
         FactModels = FactsRepository.Facts;
+        IsLoaded = true;
     }
-
-
 }
 
-<div>
+@if (IsLoaded)
+{
     <div>
         <div>
-            <span>
-                @FactModel.Fact
-            </span>
-            <span>
-                @FactModel.Length
-            </span>
+            <div>
+                <span>
+                    @FactModel.Fact
+                </span>
+                <span>
+                    @FactModel.Length
+                </span>
+            </div>
+            <form>
+                <button @onclick="GetNewFact">Get new fact</button>
+            </form>
         </div>
-        <form>
-            <button @onclick="GetNewFact">Get new fact</button>
-        </form>
-    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Fact</th>
-                <th>Length</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var factModel in FactModels)
-            {
+        <table>
+            <thead>
                 <tr>
-                    <td>@factModel.Fact</td>
-                    <td>@factModel.Length</td>
+                    <th>Fact</th>
+                    <th>Length</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var factModel in FactModels)
+                {
+                    <tr>
+                        <td>@factModel.Fact</td>
+                        <td>@factModel.Length</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+} 

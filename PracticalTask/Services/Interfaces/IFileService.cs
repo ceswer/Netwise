@@ -6,6 +6,5 @@ namespace PracticalTask.Services.Interfaces
     public interface IFileService
     {
         Task WriteFactToFileAsync(FactModel fact);
-        Task OverwriteFileAsync();
     }
 }

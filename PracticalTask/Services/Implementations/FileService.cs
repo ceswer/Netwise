@@ -35,14 +35,6 @@ namespace PracticalTask.Services.Implementations
             }
         }
 
-        // Overwritting is a time-consuming thing if list of facts is huge.
-        public async Task OverwriteFileAsync()
-        {
-            using var streamWriter = new StreamWriter(FactsFileName);
-            foreach (FactModel fact in FactsRepository.Facts)
-                await streamWriter.WriteLineAsync(fact.ToString());
-        }
-
         public async Task WriteFactToFileAsync(FactModel fact)
         {
             using var streamWriter = new StreamWriter(FactsFileName, true);
