@@ -1,0 +1,50 @@
+﻿@page "/";
+@inject IFactsRepository repository;
+
+@code {
+    private List<FactModel> FactModels = FactsRepository.Facts;
+    private FactModel FactModel = FactsRepository.Facts.Last();
+
+    protected override async Task OnInitializedAsync() => await GetNewFact();
+    protected async Task GetNewFact()
+    {
+        FactModel = await repository.GetFactAsync();
+        FactModels = FactsRepository.Facts;
+    }
+
+
+}
+
+<div>
+    <div>
+        <div>
+            <span>
+                @FactModel.Fact
+            </span>
+            <span>
+                @FactModel.Length
+            </span>
+        </div>
+        <form>
+            <button @onclick="GetNewFact">Get new fact</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fact</th>
+                <th>Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var factModel in FactModels)
+            {
+                <tr>
+                    <td>@factModel.Fact</td>
+                    <td>@factModel.Length</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
